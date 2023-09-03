@@ -8,9 +8,10 @@ myImage.addEventListener('load', function(){
     canvas.height=577;
     ctx.drawImage(myImage, 0, 0,canvas.width,canvas.height)
     const pixels=ctx.getImageData(0,0,canvas.width, canvas.height)
+    ctx.clearRect(0,0,canvas.width,canvas.height)
     //console.log(pixels)
     let particlesArray=[];
-    const numberofParticles=5000;
+    const numberofParticles=4000;
     let mapImage=[] ;
     for (let y =0; y<canvas.height; y++){
         let row=[]
@@ -45,7 +46,7 @@ myImage.addEventListener('load', function(){
             this.y=0;
             this.speed=0;
             this.velocity=Math.random()*0.5;
-            this.size=Math.random()*1.5+1;
+            this.size=Math.random()*1+0.5;
             this.position1 = Math.floor(this.y)
             this.position2=Math.floor(this.x)
         }
@@ -78,13 +79,15 @@ myImage.addEventListener('load', function(){
     Init();
     
     function animate(){
-        ctx.drawImage(myImage, 0, 0,canvas.width,canvas.height)
+      
 
         ctx.globalAlpha =0.05;
         ctx.fillStyle='rgba(0,0,0)'
         ctx.fillRect(0,0,canvas.width,canvas.height)
+        ctx.globalAlpha =0.05;
         for(let i=0; i<particlesArray.length; i++){
             particlesArray[i].update();
+            ctx.globalAlpha =particlesArray[i].speed*0.5;
             particlesArray[i].draw();
             
 
