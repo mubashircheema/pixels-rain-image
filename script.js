@@ -11,7 +11,7 @@ myImage.addEventListener('load', function(){
     ctx.clearRect(0,0,canvas.width,canvas.height)
     //console.log(pixels)
     let particlesArray=[];
-    const numberofParticles=4000;
+    const numberofParticles=10000;
     let mapImage=[] ;
     for (let y =0; y<canvas.height; y++){
         let row=[]
@@ -22,6 +22,7 @@ myImage.addEventListener('load', function(){
             const brightness=calculateRelativeBrightnss(red,green,blue);
             const cell =[
                 cellBrightness= brightness,
+                cellColor='rgba('+red+','+green+','+blue+')'
     
             ]
             row.push(cell);
@@ -45,7 +46,7 @@ myImage.addEventListener('load', function(){
             this.x=Math.random()*canvas.width;
             this.y=0;
             this.speed=0;
-            this.velocity=Math.random()*0.5;
+            this.velocity=Math.random()*5;
             this.size=Math.random()*1+0.5;
             this.position1 = Math.floor(this.y)
             this.position2=Math.floor(this.x)
@@ -55,17 +56,24 @@ myImage.addEventListener('load', function(){
             this.position2=Math.floor(this.x) 
            this.speed = mapImage[this.position1][this.position2][0];
             const movement =(2.5-this.speed)+this.velocity 
-            this.y+=movement;
+           
+            this.y+=movement/2;
+            this.x+=movement/2;
 
-            if(this.y>canvas.height){
+            if(this.y>=canvas.height){
                 this.y=0;
                 this.x=Math.random()*canvas.width;
+            }
+            
+            if(this.x>=canvas.width){
+                this.x=0;
+                this.y=Math.random()*canvas.height;
             }
 
         }
         draw(){
             ctx.beginPath();
-            ctx.fillStyle='white'
+            ctx.fillStyle=mapImage[this.position1][this.position2][1];
             ctx.arc(this.x, this.y,this.size, 0, Math.PI*2 )
             ctx.fill()
         }
@@ -87,7 +95,7 @@ myImage.addEventListener('load', function(){
         ctx.globalAlpha =0.05;
         for(let i=0; i<particlesArray.length; i++){
             particlesArray[i].update();
-            ctx.globalAlpha =particlesArray[i].speed*0.5;
+            ctx.globalAlpha =particlesArray[i].speed*0.3;
             particlesArray[i].draw();
             
 
